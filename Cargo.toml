@@ -1,0 +1,29 @@
+[package]
+name = "mdpdf"
+version = "0.1.1"
+authors = ["Cobalt <Chaosthe0rie@protonmail.com>"]
+edition = "2018"
+readme = "README.md"
+description = "CLI tool for md to pdf conversion with comrak and wkhtmltopdf"
+license = "GPLv3.0-or-newer"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+comrak = "*"
+askama = { version = "*", default-features = false }
+ansi_term = "*"
+chrono = { version = "*", features = ["unstable-locales"] }
+wkhtmltopdf = "*"
+
+[package.metadata.deb]
+section = "utility"
+priority = "optional"
+assets = [["target/release/mdpdf", "usr/bin/", "755"]]
+
+[dependencies.clap]
+version = "^2.33.3"
+default-features = false
+
+# Cherry-pick the features you'd like to use
+features = ["suggestions", "color", "wrap_help"]

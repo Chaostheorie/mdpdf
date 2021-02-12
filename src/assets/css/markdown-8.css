@@ -1,0 +1,8 @@
+@import "./markdown7.css";
+
+body > h1:first-of-type {
+  font-size: 300%;
+  font-weight: bold;
+  text-decoration: underline;
+  page-break-after: always !important;
+}
