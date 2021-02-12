@@ -6,6 +6,8 @@ mdpdf is a simple cli tool to convert markdown files to pdf files. It leverages 
 
 The build process is at the moment only tested on debian. You will need to build wkhtmlpdf first. See their [packaging repository](https://github.com/wkhtmltopdf/packaging) for instructions.
 
+> Change the default name by editing src/name.txt. Please use UTF-8 for this file
+
 Just run: `make setup`
 
 ## Licensing
