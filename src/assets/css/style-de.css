@@ -21,8 +21,16 @@ a:visited {
 
 pre,
 blockquote {
-    border: 1px solid #999;
+    border: 2px solid #999;
+    margin: 0.5rem !important;
+    font-size: large;
     page-break-inside: avoid;
+}
+
+blockquote > p {
+    margin-bottom: 0.5rem !important;
+    margin: 0.5rem !important;
+    font-size: large;
 }
 
 tr,
@@ -152,11 +160,6 @@ h3,
 h4,
 h5 {
     font-size: 135%;
-}
-
-blockquote {
-    border-left: 1rem solid #fafafa;
-    padding: 1rem !important;
 }
 
 table {

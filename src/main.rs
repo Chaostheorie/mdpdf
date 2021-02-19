@@ -10,7 +10,6 @@ use comrak::markdown_to_html;
 use std::env::var;
 use std::fmt::Display;
 use std::fs::File;
-use std::include_str;
 use std::io::Read;
 use std::path::Path;
 use std::process::exit;
@@ -41,13 +40,8 @@ fn main() {
                 .required(true)
                 .help("Sets the output path to write pdf to"),
         )
-        .arg(
-            Arg::with_name("name")
-                .short("-n")
-                .long("--name")
-                .takes_value(true)
-                .help("Add name and date to pdf footer")
-                .default_value(include_str!("name.txt")),
+        .arg(   
+            style::name_arg()
         )
         .arg(
             Arg::with_name("extensions")

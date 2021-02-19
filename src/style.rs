@@ -1,11 +1,29 @@
-use std::fs::File;
 use crate::document::Languages;
+use clap::Arg;
+use std::fs::File;
 use std::include_str;
 use std::io::{BufReader, Error as IOError, Read};
 use std::path::Path;
 
 /* mdb base for basic layout */
 pub const MDB_STYLESHEET: &'static str = include_str!("assets/css/mdb.min.css");
+
+/* default name - can be included by having a name.txt file in src at compilation time */
+static NAME: &'static str = include_str!("name.txt");
+
+pub fn name_arg() -> Arg<'static, 'static> {
+    let arg = Arg::with_name("name")
+        .short("-n")
+        .long("--name")
+        .takes_value(true)
+        .help("Add name and date to pdf footer");
+
+    if NAME != "" {
+        arg.default_value(NAME)
+    } else {
+        arg
+    }
+}
 
 /* Stylesheets */
 pub struct Stylesheet {
@@ -24,7 +42,7 @@ impl Stylesheet {
     pub fn local(&self, language: &Languages) -> String {
         match *language {
             Languages::DE => self.de.clone(),
-            Languages::EN => self.en.clone()
+            Languages::EN => self.en.clone(),
         }
     }
 

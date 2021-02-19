@@ -54,7 +54,7 @@ impl Footer {
             ),
             Languages::DE => (
                 local
-                    .format_localized("%a %b %e %Y", Locale::de_DE)
+                    .format_localized("%a, %e %b %Y", Locale::de_DE)
                     .to_string(),
                 "Erstellt von".to_owned(),
             ),
