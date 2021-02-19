@@ -2,15 +2,87 @@ use crate::style::{Stylesheet, MDB_STYLESHEET};
 use crate::{error, info};
 use askama::Template;
 use chrono::prelude::*;
+use clap::ArgMatches;
 use std::fs::remove_file;
 use std::fs::File;
 use std::io::{Error as IOError, Write};
 use std::path::Path;
 
+// trait for options
+pub trait ClapOption {
+    fn parse(matches: &ArgMatches) -> Self;
+    fn options() -> &'static [&'static str];
+}
+
 // Languages to support different locales
 pub enum Languages {
     EN,
     DE,
+}
+
+// Licenses to support direct attribution
+pub enum CC4Licenses {
+    BY,
+    ByNc,
+    BySa,
+    ByNcSa,
+    NONE,
+}
+
+/*  implementations for options */
+impl ClapOption for Languages {
+    fn parse(matches: &ArgMatches) -> Self {
+        if matches.is_present("de") {
+            Self::DE
+        } else {
+            Self::EN
+        }
+    }
+
+    fn options() -> &'static [&'static str] {
+        &["de", "en"]
+    }
+}
+
+impl ClapOption for CC4Licenses {
+    fn parse(matches: &ArgMatches) -> Self {
+        match matches.value_of("license") {
+            Some(l) => match l {
+                "CC-BY-NC" => Self::ByNc,
+                "CC-BY-SA" => Self::BySa,
+                "CC-BY" => Self::BY,
+                "CC-BY-NC-SA" => Self::ByNcSa,
+                _ => Self::NONE,
+            },
+            None => Self::NONE,
+        }
+    }
+
+    fn options() -> &'static [&'static str] {
+        &["CC-BY-NC", "CC-BY", "CC-BY-NC-SA", "CC-BY-SA"]
+    }
+}
+
+impl CC4Licenses {
+    fn display(&self, language: &Languages) -> String {
+        match self {
+            Self::NONE => "".to_owned(),
+            license => {
+                let short = match license {
+                    CC4Licenses::BY => "CC-BY",
+                    CC4Licenses::BySa => "CC-BY-SA",
+                    CC4Licenses::ByNcSa => "CC-BY-NC-SA",
+                    CC4Licenses::ByNc => "CC-BY-NC",
+                    CC4Licenses::NONE => unimplemented!(),
+                };
+
+                match *language {
+                    Languages::DE => format!("- Lizenziert unter {} 4.0", short),
+                    Languages::EN => format!("- Licensed under {} 4.0", short),
+                }
+            }
+        }
+    }
 }
 
 #[derive(Template)]
@@ -26,6 +98,7 @@ pub struct Footer {
     pub date: String,
     pub name: String,
     pub text: String,
+    pub license: String,
 }
 
 #[derive(Template)]
@@ -45,9 +118,10 @@ impl Header {
 }
 
 impl Footer {
-    pub fn new(name: String, language: &Languages) -> Footer {
+    pub fn new(name: String, matches: &ArgMatches) -> Footer {
         let local = Local::now();
-        let (date, text) = match *language {
+        let language = Languages::parse(matches);
+        let (date, text) = match language {
             Languages::EN => (
                 local.format("%a %b %e %Y").to_string(),
                 "Created by".to_owned(),
@@ -60,7 +134,12 @@ impl Footer {
             ),
         };
 
-        Footer { name, date, text }
+        Footer {
+            name,
+            date,
+            text,
+            license: CC4Licenses::parse(&matches).display(&language),
+        }
     }
 
     pub fn to_file(&self) -> Result<(), IOError> {
@@ -96,10 +175,10 @@ impl Footer {
 }
 
 impl Document {
-    pub fn build(style: Stylesheet, content: String, language: &Languages) -> String {
+    pub fn build(style: Stylesheet, content: String, matches: &ArgMatches) -> String {
         // create new document
         let new = Document {
-            header: Header::new(style, language),
+            header: Header::new(style, &Languages::parse(&matches)),
             content,
         };
 

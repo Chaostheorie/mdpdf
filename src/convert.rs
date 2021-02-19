@@ -1,4 +1,4 @@
-use crate::document::{Footer, Languages, TMP_PATH};
+use crate::document::{Footer, TMP_PATH};
 use crate::{error, info};
 use clap::ArgMatches;
 use comrak::ComrakOptions;
@@ -19,7 +19,7 @@ fn parse(wrapped: Option<&str>) -> PageSize {
     }
 }
 
-pub fn convert(html: String, name: Option<String>, language: &Languages, matches: &ArgMatches) {
+pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
     let mut app = match PdfApplication::new() {
         Ok(app) => app,
         Err(e) => error(format!("Failed to init PDF Application: {}", e)),
@@ -56,7 +56,7 @@ pub fn convert(html: String, name: Option<String>, language: &Languages, matches
 
     let mut builder = app.builder();
     if name.is_some() {
-        let footer = Footer::new(name.unwrap(), language);
+        let footer = Footer::new(name.unwrap(), matches);
         match footer.to_file() {
             Ok(_) => (),
             Err(e) => error(format!("Failed to render footer: {}", e)),

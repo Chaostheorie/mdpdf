@@ -12,6 +12,7 @@ use std::fmt::Display;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+use crate::document::ClapOption;
 use std::process::exit;
 
 pub fn error<S: Display>(e: S) -> ! {
@@ -95,20 +96,14 @@ fn main() {
             Arg::with_name("license")
             .short("-l")
             .long("--license")
-            .help("Add license to footer")
+            .help("Add CC 4.0 license to footer")
             .requires("name")
             .takes_value(true)
-            .possible_values(&["CC-BY-NC 4.0", "CC-BY 4.0", "CC-BY-NC-SA 4.0", "CC-BY-SA 4.0"])
+            .possible_values(document::CC4Licenses::options())
         )
         .get_matches();
 
     // evaluate cli args
-    let language = if matches.is_present("de") {
-        document::Languages::DE
-    } else {
-        document::Languages::EN
-    };
-
     let name = if matches.is_present("name") {
         Some(matches.value_of("name").unwrap().to_owned())
     } else if var("NAME").is_ok() {
@@ -166,9 +161,9 @@ fn main() {
     // create html
     let options = convert::build_options(&matches);
     let output = markdown_to_html(raw_input.as_str(), &options);
-    let rendered = document::Document::build(style, output, &language);
+    let rendered = document::Document::build(style, output, &matches);
 
     // convert html
     // this handles all errors with ! and doesn't return a result
-    convert::convert(rendered, name, &language, &matches);
+    convert::convert(rendered, name, &matches);
 }
