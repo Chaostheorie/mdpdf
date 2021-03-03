@@ -1,8 +1,10 @@
 # Makefile for mdpdf
 
+setup:
+	bash scripts/check.sh
 install:
 	bash scripts/install.sh
 deb:
-	cargo deb
+	bash scripts/build.sh deb
 build:
-	cargo build --release
+	bash scripts/build.sh

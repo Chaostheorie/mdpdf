@@ -1,4 +1,4 @@
-use crate::document::{Footer, TMP_PATH};
+use crate::document::{Document, Footer, TMP_DOCUMENT_PATH, TMP_PATH};
 use crate::{error, info};
 use clap::ArgMatches;
 use comrak::ComrakOptions;
@@ -87,10 +87,6 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
             Ok(_) => info(format!("Generated PDF and saved to {}", path)),
             Err(e) => error(format!("Failed to save PDF to {}: {}", path, e)),
         };
-        match remove_file(Path::new(TMP_PATH)) {
-            Ok(_) => (),
-            Err(e) => info(format!("Failed to remove old footer: {}", e)),
-        };
     } else {
         if matches.is_present("print") {
             unsafe { builder.object_setting("margin.left", "12cm") };
@@ -116,9 +112,24 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
             Ok(_) => info(format!("Generated PDF and saved to {}", path)),
             Err(e) => error(format!("Failed to save PDF to {}: {}", path, e)),
         };
+    }
+
+    if !matches.is_present("keep") {
         match remove_file(Path::new(TMP_PATH)) {
             Ok(_) => (),
             Err(e) => info(format!("Failed to remove old footer: {}", e)),
+        };
+        match remove_file(Path::new(TMP_DOCUMENT_PATH)) {
+            Ok(_) => (),
+            Err(e) => info(format!("Failed to remove old footer: {}", e)),
+        };
+    } else {
+        match Document::to_file(html) {
+            Ok(_) => (),
+            Err(e) => error(format!(
+                "Failed to render tmp document (try without -k): {}",
+                e
+            )),
         };
     }
 }

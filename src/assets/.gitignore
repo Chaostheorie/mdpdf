@@ -1,0 +1,12 @@
+# Npm modules
+node_modules/
+
+# Change file
+scss/.dir_changes
+*.css
+
+# npm package.lock
+package-lock.json
+
+# something
+old-css/

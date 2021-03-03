@@ -1,4 +1,4 @@
-use crate::style::{Stylesheet, MDB_STYLESHEET};
+use crate::style::{Stylesheet, PYGMENTS_STYLESHEET};
 use crate::{error, info};
 use askama::Template;
 use chrono::prelude::*;
@@ -111,8 +111,8 @@ pub struct Document {
 impl Header {
     pub fn new(style: Stylesheet, language: &Languages) -> Header {
         Header {
-            css: MDB_STYLESHEET,
             style: style.local(language),
+            css: PYGMENTS_STYLESHEET,
         }
     }
 }
@@ -188,7 +188,35 @@ impl Document {
             Err(e) => error(format!("Couldn't render html: {}", e)),
         }
     }
+
+    pub fn to_file(html: String) -> Result<(), IOError> {
+        // check path
+        let path = Path::new(TMP_DOCUMENT_PATH);
+
+        if path.exists() {
+            info("TMP file path is in use. Overriding");
+            match remove_file(path) {
+                Ok(_) => (),
+                Err(e) => error(format!("Failed to remove old tmp file: {}", e)),
+            };
+        }
+
+        // Create a file
+        let mut file = match File::create(path) {
+            Ok(file) => file,
+            Err(e) => error(format!("Failed to create tmp file: {}", e)),
+        };
+
+        // write document to file
+        match file.write_all(html.as_bytes()) {
+            Ok(_) => (),
+            Err(e) => error(format!("Failed to write to tmp file: {}", e)),
+        };
+
+        Ok(())
+    }
 }
 
 // constant values
 pub(crate) const TMP_PATH: &'static str = "./.footer.html";
+pub(crate) const TMP_DOCUMENT_PATH: &'static str = "./.document.html";

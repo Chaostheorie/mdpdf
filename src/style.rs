@@ -6,7 +6,7 @@ use std::io::{BufReader, Error as IOError, Read};
 use std::path::Path;
 
 /* mdb base for basic layout */
-pub const MDB_STYLESHEET: &'static str = include_str!("assets/css/mdb.min.css");
+pub const PYGMENTS_STYLESHEET: &'static str = include_str!("assets/css/pygment.css");
 
 /* default name - can be included by having a name.txt file in src at compilation time */
 static NAME: &'static str = include_str!("name.txt");
@@ -34,8 +34,8 @@ pub struct Stylesheet {
 impl Stylesheet {
     pub fn default() -> Self {
         Stylesheet {
-            en: include_str!("assets/css/style-en.css").to_owned(),
-            de: include_str!("assets/css/style-de.css").to_owned(),
+            en: include_str!("assets/css/en.css").to_owned(),
+            de: include_str!("assets/css/de.css").to_owned(),
         }
     }
 

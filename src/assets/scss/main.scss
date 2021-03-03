@@ -1,0 +1,104 @@
+/*
+Main.scss Frontend stylesheet for mdpdf
+@license GPL v3.0 or newer @ Cobalt <https://cobalt.rocks>
+*/
+
+/*
+ Importing everything here is acceptable as PurgeCSS will remove anything unused
+ This is preferred instead of manually tracking down every used component
+ */
+
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'variables.scss';
+@import 'layout.scss';
+@import 'color.scss';
+
+p,
+.modest-p {
+    font-size: 1rem;
+    page-break-inside: avoid !important;
+    margin-bottom: 1.3rem;
+}
+
+small,
+.modest-small {
+    font-size: 0.707em;
+}
+
+canvas,
+iframe,
+video,
+svg,
+select,
+textarea {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-size: 100%;
+    color: #444;
+    font-weight: 300;
+    margin: 0 auto;
+    padding: 0.25rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+    color: #000;
+    position: relative;
+    display: inline-block;
+//    width: fit-content !important;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 100%;
+        margin: 0.1rem auto;
+        width: 50%;
+        height: 0.1rem;
+        background: $dark;
+    }
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+h1 {
+    font-size: 150%;
+}
+
+h1:first-of-type {
+    text-align: left !important;
+    font-weight: bold;
+    font-size: 160%;
+}
+
+h2 {
+    font-size: 145%;
+    text-align: center !important;
+}
+
+h3,
+h4,
+h5 {
+    font-size: 135%;
+    text-align: center !important;
+}
+
+table {
+    border-spacing: 1rem !important;
+    border-collapse: collapse !important;
+    width: 100%;
+    display: flex !important;
+    flex-wrap: wrap;
+    margin: 1rem;
+}

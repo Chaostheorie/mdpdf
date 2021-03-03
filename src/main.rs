@@ -60,6 +60,12 @@ fn main() {
             .possible_values(&["A3", "A4", "A5", "A6"])
         )
         .arg(
+            Arg::with_name("keep")
+            .short("-k")
+            .takes_value(false)
+            .help("Keep tmp file")
+        )
+        .arg(
             Arg::with_name("orientation")
             .long("--orientation")        
             .help("PDF document orientation")

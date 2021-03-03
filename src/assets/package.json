@@ -1,0 +1,24 @@
+{
+    "name": "assets-mdpdf",
+    "version": "1.0.0",
+    "description": "assets for mdpdf",
+    "scripts": {
+        "compile": "bash ../../scripts/compile.sh",
+        "lint": "stylelint scss/*.scss"
+    },
+    "author": "Cobalt",
+    "license": "GPL-3.0",
+    "devDependencies": {
+        "purgecss": "^3.0.0",
+        "sass": "^1.29.0",
+        "stylelint": "^13.7.2",
+        "stylelint-config-standard": "^20.0.0",
+        "webpack": "^5.16",
+        "webpack-cli": "^4.4",
+        "webpack-merge": "^5.4.0"
+    },
+    "dependencies": {
+        "@popperjs/core": "^2.5.4",
+        "bootstrap": "^5.0.0-beta1"
+    }
+}
