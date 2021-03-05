@@ -4,7 +4,7 @@ mod document;
 mod style;
 
 // imports
-use ansi_term::Colour::{Blue, Red};
+use ansi_term::Colour::{Blue, Yellow, Red};
 use clap::{App, Arg};
 use comrak::markdown_to_html;
 use std::env::var;
@@ -23,6 +23,11 @@ pub fn error<S: Display>(e: S) -> ! {
 fn info<S: Display>(message: S) {
     println!("{}: {}", Blue.paint("[Info]"), message);
 }
+
+fn warning<S: Display>(message: S) {
+    println!("{}: {}", Yellow.paint("[Warning]"), message);
+}
+
 
 fn main() {
     let matches = App::new("mdpdf")

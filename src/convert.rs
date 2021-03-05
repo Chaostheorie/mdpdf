@@ -1,9 +1,7 @@
-use crate::document::{Document, Footer, TMP_DOCUMENT_PATH, TMP_PATH};
-use crate::{error, info};
+use crate::document::{Document, Footer};
+use crate::{error, info, warning};
 use clap::ArgMatches;
 use comrak::ComrakOptions;
-use std::fs::remove_file;
-use std::path::Path;
 use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
 fn parse(wrapped: Option<&str>) -> PageSize {
@@ -55,10 +53,14 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
     };
 
     let mut builder = app.builder();
-    if name.is_some() {
+
+    // save has_name & footer_path here to make the available later
+    let has_name = name.is_some();
+
+    if has_name {
         let footer = Footer::new(name.unwrap(), matches);
-        match footer.to_file() {
-            Ok(_) => (),
+        let footer_path = match footer.to_file() {
+            Ok(path) => path,
             Err(e) => error(format!("Failed to render footer: {}", e)),
         };
 
@@ -69,7 +71,7 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
         let out_result = unsafe {
             builder
                 .orientation(orientation)
-                .object_setting("footer.htmlUrl", TMP_PATH)
+                .object_setting("footer.htmlUrl", footer_path) // pretty sure this isn't totally safe
                 .object_setting("load.blockLocalFileAccess", "false")
                 .margin(margin)
                 .page_size(parse(matches.value_of("pagesize")))
@@ -115,17 +117,13 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
     }
 
     if !matches.is_present("keep") {
-        match remove_file(Path::new(TMP_PATH)) {
+        match Document::remove_artifacts() {
             Ok(_) => (),
-            Err(e) => info(format!("Failed to remove old footer: {}", e)),
-        };
-        match remove_file(Path::new(TMP_DOCUMENT_PATH)) {
-            Ok(_) => (),
-            Err(e) => info(format!("Failed to remove old footer: {}", e)),
+            Err(e) => warning(format!("Failed to remove old document artifact: {}", e)),
         };
     } else {
         match Document::to_file(html) {
-            Ok(_) => (),
+            Ok(path) => info(format!("Kept document body under: {}", path)),
             Err(e) => error(format!(
                 "Failed to render tmp document (try without -k): {}",
                 e

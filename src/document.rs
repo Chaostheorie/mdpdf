@@ -1,10 +1,9 @@
 use crate::style::{Stylesheet, PYGMENTS_STYLESHEET};
-use crate::{error, info};
+use crate::{error, info, warning};
 use askama::Template;
 use chrono::prelude::*;
 use clap::ArgMatches;
-use std::fs::remove_file;
-use std::fs::File;
+use std::fs::{read_dir, remove_file, File};
 use std::io::{Error as IOError, Write};
 use std::path::Path;
 
@@ -108,6 +107,8 @@ pub struct Document {
     pub content: String,
 }
 
+// function too search for any document & footer artifact
+
 impl Header {
     pub fn new(style: Stylesheet, language: &Languages) -> Header {
         Header {
@@ -142,16 +143,20 @@ impl Footer {
         }
     }
 
-    pub fn to_file(&self) -> Result<(), IOError> {
+    pub fn to_file(&self) -> Result<String, IOError> {
         // check path
-        let path = Path::new(TMP_PATH);
+        let mut raw_path = FOOTER_PATH.to_owned();
+        let mut path = Path::new(&raw_path);
 
+        // when path exists already fall back to {number} - path
         if path.exists() {
-            info("TMP file path is in use. Overriding");
-            match remove_file(path) {
-                Ok(_) => (),
-                Err(e) => error(format!("Failed to remove old tmp file: {}", e)),
-            };
+            let mut i = 1;
+
+            while path.exists() {
+                raw_path = format!("./.footer-{}.html", i);
+                path = Path::new(&raw_path);
+                i += 1;
+            }
         }
 
         // Create a file
@@ -160,17 +165,19 @@ impl Footer {
             Err(e) => error(format!("Failed to create tmp file: {}", e)),
         };
 
-        // Write footer data to the first handle.
+        // Render Footer template into String
         let text = match self.render() {
             Ok(text) => text,
             Err(e) => error(format!("Couldn't render footer: {}", e)),
         };
+
+        // Write Footer to tmp file
         match file.write_all(text.as_bytes()) {
             Ok(_) => (),
             Err(e) => error(format!("Failed to write to tmp file: {}", e)),
         };
 
-        Ok(())
+        Ok(raw_path)
     }
 }
 
@@ -189,16 +196,20 @@ impl Document {
         }
     }
 
-    pub fn to_file(html: String) -> Result<(), IOError> {
+    pub fn to_file(html: String) -> Result<String, IOError> {
         // check path
-        let path = Path::new(TMP_DOCUMENT_PATH);
+        let mut raw_path = DOCUMENT_PATH.to_owned();
+        let mut path = Path::new(&raw_path);
 
+        // when path exists already fall back to {number} - path
         if path.exists() {
-            info("TMP file path is in use. Overriding");
-            match remove_file(path) {
-                Ok(_) => (),
-                Err(e) => error(format!("Failed to remove old tmp file: {}", e)),
-            };
+            let mut i = 1;
+
+            while path.exists() {
+                raw_path = format!("./.document-{}.html", i);
+                path = Path::new(&raw_path);
+                i += 1;
+            }
         }
 
         // Create a file
@@ -213,10 +224,45 @@ impl Document {
             Err(e) => error(format!("Failed to write to tmp file: {}", e)),
         };
 
+        Ok(raw_path)
+    }
+
+    // Removes footer and document artifacts
+    pub fn remove_artifacts() -> Result<(), IOError> {
+        for entry in read_dir(".")? {
+            let entry = entry?;
+            let path = entry.path();
+
+            match path.to_str() {
+                // only check if able to convert to string because there would be no way to determine without file name
+                Some(stringified) => {
+                    // check if is file and matching tmp file patterns
+                    if path.is_file() && stringified.starts_with("./.document")
+                        || stringified.starts_with("./.footer")
+                    {
+                        match remove_file(&path) {
+                            Ok(_) => {
+                                // print info if removing more than default tmp footer file
+                                if stringified != FOOTER_PATH {
+                                    info(format!("Removed old document artifact: {}", stringified));
+                                }
+                            }
+                            Err(e) => {
+                                // return in case of an error to caller
+                                return Err(e);
+                            }
+                        }
+                    }
+                }
+                // might add an option to surpress any warning later on
+                None => warning("Failed to parse a part of the current dir"),
+            };
+        }
+
         Ok(())
     }
 }
 
-// constant values
-pub(crate) const TMP_PATH: &'static str = "./.footer.html";
-pub(crate) const TMP_DOCUMENT_PATH: &'static str = "./.document.html";
+// static values
+static DOCUMENT_PATH: &'static str = "./.document.html";
+static FOOTER_PATH: &'static str = "./.document.html";

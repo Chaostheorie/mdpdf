@@ -21,11 +21,3 @@ To build a debian package run `make deb` instead.
 mdpdf is licensed under GPLv3.0 @ Cobalt <https://ocbalt.rocks>.
 
 This uses [bootstrap 5](https://github.com/twbs/bootstrap) for styling and may embed a part of their code in the binary. The license for bootstrap is [found here](https://github.com/twbs/bootstrap/blob/main/LICENSE). It also relies on [pygments stylesheets](https://github.com/richleland/pygments-css) for code styling ([License](https://github.com/richleland/pygments-css/blob/master/UNLICENSE.txt)).
-
-## TODO
-
--   Fix purgecss (will shrink binary size)
--   Fix styling
--   Windows and/ or Mac support
--   Fix tmp file messages
--   Add links to building instructions
