@@ -1,4 +1,4 @@
-use crate::style::{Stylesheet, HIGHLIGHTCSS};
+use crate::style::Stylesheet;
 use crate::{error, info, warning};
 use askama::Template;
 use chrono::prelude::*;
@@ -111,7 +111,7 @@ impl Header {
     pub fn new(style: Stylesheet, language: &Languages) -> Header {
         Header {
             style: style.local(language),
-            css: HIGHLIGHTCSS,
+            css: "",  // kept for extendability
         }
     }
 }
