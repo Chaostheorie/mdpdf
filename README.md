@@ -1,8 +1,8 @@
 # mdpdf
 
-mdpdf is a simple cli tool to convert commonmark files to pdf files. It leverages [pulldown-cmark](https://github.com/raphlinus/pulldown-cmark) syntect as well as ammonia and [wkhtmltopdf]() to provide a complete experience. This includes syntax highlighting and extensions such as tables, taskslists, strikethorugh or footnotes.
+mdpdf is a simple CLI tool to convert [commonmark](https://commonmark.org/) files to PDF files. It leverages [pulldown-cmark](https://github.com/raphlinus/pulldown-cmark), [syntect](https://github.com/trishume/syntect) as well as [ammonia](https://github.com/rust-ammonia/ammonia) and [wkhtmltopdf](https://wkhtmltopdf.org/) to provide a complete experience. This includes syntax highlighting and extensions such as tables, taskslists, strikethorugh or footnotes.
 
-> Only linux is supported at the moment though you may be able to cross compile.
+> Only linux is supported for building ATM though you may be able to cross compile for windows etc.
 
 ## Building
 
@@ -18,18 +18,18 @@ To build a debian package run `make deb` instead.
 
 ## Licensing
 
-mdpdf is licensed under GPLv3.0 @ Cobalt <https://ocbalt.rocks>.
+mdpdf is licensed under GPLv2.0 @ Cobalt <https://cobalt.rocks>.
 
 This uses [bootstrap 5](https://github.com/twbs/bootstrap) for styling and may embed a part of their code in the binary. The license for bootstrap is [found here](https://github.com/twbs/bootstrap/blob/main/LICENSE).
 
-## 
+##
 
 ## TODO
 
-### 0.1.1  (WIP)
+### 0.1.1 (WIP)
 
-- [ ] proper footnote styling
-- [x] syntax highlighting
+-   [ ] proper footnote styling
+-   [x] syntax highlighting
 
 ### 0.1.2
 
