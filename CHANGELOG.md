@@ -2,8 +2,7 @@
 
 ## 0.1.1 (WIP)
 
-> Please see README.md#Building for instruction on how to build
+> Please see README.md#Building for instruction on how to obtain a binary or deb package
 
 -   Initial Release
 -   Syntax highlighting
--   
