@@ -14,10 +14,10 @@ jobs:
             - uses: actions-rs/toolchain@v1
               with:
                   toolchain: stable
+            - uses: Swatinem/rust-cache@v1
             - name: Install GNU make
               run: |
                   sudo apt update
                   sudo apt install make
-            - uses: actions/checkout@v2
             - name: Build
               run: make build
