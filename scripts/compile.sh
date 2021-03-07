@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-# Script for compiling frontend stylsheetss mdpdf
+# Script for compiling frontend stylsheets as part of mdpdf assets
 # Requires being run from npm or npm with purgecss and sass (dart) being installed
 # WARNING: This requires GNU Coreutils Stat and GNU Grep being installed
 # This script only compiles if one of the files changed
 # You will need to remove your static/scss/.dir-changes file, if you're adding a new scss file
-# under GPL v3.0 @ Cobalt <cobalt.rocks> (see pentagame-online LICENSE)
+# under GPL v2.0 @ Cobalt <cobalt.rocks> (see mdpdf LICENSE)
 
 # Constants
 CHANGE_FILE="scss/.dir-changes"
