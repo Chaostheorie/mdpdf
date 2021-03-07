@@ -37,9 +37,9 @@ This uses [bootstrap 5](https://github.com/twbs/bootstrap) for styling and may e
 
 -   [x] Fix removal process
 -   [ ] Custom stylesheet option (compile & runtime)
--   [ ] More dcumentation
+-   [ ] More documentation
 -   [x] Fix tmp file messages
--   [ ] Add links to README.md
+-   [x] Add links to README.md
 
 ### 0.1.3 (WIP)
 
