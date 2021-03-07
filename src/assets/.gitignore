@@ -5,8 +5,5 @@ node_modules/
 scss/.dir-changes
 *.css
 
-# npm package.lock
-package-lock.json
-
 # something
 old-css/
