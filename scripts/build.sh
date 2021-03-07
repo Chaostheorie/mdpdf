@@ -3,6 +3,7 @@
 
 echo "Building assets"
 cd src/assets
+npm i
 npm run compile
 cd ../../
 
