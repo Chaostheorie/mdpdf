@@ -1,4 +1,5 @@
 [![Build status](https://img.shields.io/github/workflow/status/Chaostheorie/mdpdf/CI?style=for-the-badge)](https://github.com/Chaostheorie/mdpdf/actions) [![License](https://img.shields.io/github/license/Chaostheorie/mdpdf?style=for-the-badge)](https://github.com/Chaostheorie/mdpdf/blob/main/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FChaostheorie%2Fmdpdf.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FChaostheorie%2Fmdpdf?ref=badge_shield)
 
 # mdpdf
 
@@ -23,6 +24,9 @@ To build a debian package run `make deb` instead.
 mdpdf is licensed under GPLv2.0 @ Cobalt <https://cobalt.rocks>.
 
 This uses [bootstrap 5](https://github.com/twbs/bootstrap) for styling and may embed a part of their code in the binary. The license for bootstrap is [found here](https://github.com/twbs/bootstrap/blob/main/LICENSE).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FChaostheorie%2Fmdpdf.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FChaostheorie%2Fmdpdf?ref=badge_large)
 
 ##
 
