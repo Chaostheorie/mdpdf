@@ -1,2 +1,15 @@
+# Cargo lock
+Cargo.lock
+
+# Target for cargo
 target/
+
+# output files for -k
+.document*
+.footer*
+
+# general output files
+*.pdf
+
+# File for embedding name into binary
 name.txt

@@ -2,12 +2,13 @@
 mod convert;
 mod document;
 mod style;
+mod highlight;
 
 // imports
 use ansi_term::Colour::{Blue, Yellow, Red};
 use clap::{App, Arg};
-use comrak::markdown_to_html;
 use std::env::var;
+use ammonia::clean_text;
 use std::fmt::Display;
 use std::fs::File;
 use std::io::Read;
@@ -51,9 +52,9 @@ fn main() {
         )
         .arg(
             Arg::with_name("extensions")
-            .help("Comrak Extensions to be used. By default all are activated. Commas are supported as separators when specifying multiple.")
+            .help("Commonmark Extensions to be used. By default all are activated. Commas are supported as separators when specifying multiple.")
             .takes_value(true)
-            .possible_values(&["autolink", "description_lists", "footnotes", "superscript", "header_ids", "table", "tagfilter"  ,"tasklist"])
+            .possible_values(&["footnotes", "table", "tasklist", "smart-punctuation", "strikethrough"])
             .long("--extensions")
         )
         .arg(
@@ -68,7 +69,7 @@ fn main() {
             Arg::with_name("keep")
             .short("-k")
             .takes_value(false)
-            .help("Keep tmp file")
+            .help("Keep temporary files (including body and footer")
         )
         .arg(
             Arg::with_name("orientation")
@@ -89,7 +90,7 @@ fn main() {
             Arg::with_name("de")
             .short("-d")
             .long("--german")
-            .help("Static content in german")
+            .help("Static content in german") // ATM only affecting footer
         )
         .arg(
             Arg::with_name("toc")
@@ -116,9 +117,9 @@ fn main() {
 
     // evaluate cli args
     let name = if matches.is_present("name") {
-        Some(matches.value_of("name").unwrap().to_owned())
+        Some(clean_text(&matches.value_of("name").unwrap().to_owned()))
     } else if var("NAME").is_ok() {
-        Some(var("NAME").unwrap())
+        Some(clean_text(&var("NAME").unwrap()))
     } else {
         None
     };
@@ -171,7 +172,7 @@ fn main() {
 
     // create html
     let options = convert::build_options(&matches);
-    let output = markdown_to_html(raw_input.as_str(), &options);
+    let output = highlight::parse_html(raw_input, options);
     let rendered = document::Document::build(style, output, &matches);
 
     // convert html

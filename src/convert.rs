@@ -1,7 +1,7 @@
 use crate::document::{Document, Footer};
 use crate::{error, info, warning};
 use clap::ArgMatches;
-use comrak::ComrakOptions;
+use pulldown_cmark::Options;
 use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
 fn parse(wrapped: Option<&str>) -> PageSize {
@@ -18,11 +18,14 @@ fn parse(wrapped: Option<&str>) -> PageSize {
 }
 
 pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
+    // create pdf application
+    // this may initialize wkhtml too
     let mut app = match PdfApplication::new() {
         Ok(app) => app,
         Err(e) => error(format!("Failed to init PDF Application: {}", e)),
     };
 
+    // evaluate title for the PDF output
     let title = match matches.value_of("title") {
         Some(title) => title,
         None => matches
@@ -32,6 +35,8 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
             .unwrap(),
     };
 
+    // margin is not really important but may be useful when you intend to e.g. print a PDF later
+    // on and want to put it into a folder. Useful for handouts too
     let margin = match matches.value_of("margin") {
         Some(margin) => match margin.parse::<u32>() {
             Ok(margin) => Size::Millimeters(margin),
@@ -43,6 +48,7 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
         None => Size::Millimeters(10),
     };
 
+    // Not too sure if I may extend this part with support for angles
     let orientation = match matches.value_of("orientation") {
         Some(orientation) => match orientation {
             "portrait" => Orientation::Portrait,
@@ -73,6 +79,7 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
                 .orientation(orientation)
                 .object_setting("footer.htmlUrl", footer_path) // pretty sure this isn't totally safe
                 .object_setting("load.blockLocalFileAccess", "false")
+                .object_setting("web.enableJavascript", "true")
                 .margin(margin)
                 .page_size(parse(matches.value_of("pagesize")))
                 .title(&title)
@@ -100,6 +107,7 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
                 .margin(margin)
                 .page_size(parse(matches.value_of("pagesize")))
                 .object_setting("load.blockLocalFileAccess", "false")
+                .object_setting("web.enableJavascript", "true")
                 .title(&title)
                 .build_from_html(&html)
         };
@@ -132,35 +140,51 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
     }
 }
 
-pub fn build_options(matches: &ArgMatches) -> ComrakOptions {
-    let mut options = ComrakOptions::default();
+pub fn build_options(matches: &ArgMatches) -> Options {
+    let mut options = Options::empty();
 
     if matches.is_present("extensions") {
         // extract data and prepare new options obj
         let activated_extensions: Vec<&str> =
             matches.value_of("extensions").unwrap().split(",").collect();
         // check for extensions
-        options.extension.strikethrough = activated_extensions.contains(&"strikethrough");
-        options.extension.superscript = activated_extensions.contains(&"superscript");
-        options.extension.footnotes = activated_extensions.contains(&"footnotes");
-        options.extension.autolink = activated_extensions.contains(&"autolink");
-        options.extension.table = activated_extensions.contains(&"table");
-        options.extension.tagfilter = activated_extensions.contains(&"tagfilter");
-        options.extension.tasklist = activated_extensions.contains(&"tasklist");
-        options.extension.description_lists = activated_extensions.contains(&"description_lists");
-        if activated_extensions.contains(&"header_ids") {
-            options.extension.header_ids = Some("".to_owned());
-        }
+
+        // check for strikethrough extension
+        options.set(
+            Options::ENABLE_STRIKETHROUGH,
+            activated_extensions.contains(&"strikethrough"),
+        );
+
+        // check for table extension
+        options.set(
+            Options::ENABLE_TABLES,
+            activated_extensions.contains(&"table"),
+        );
+
+        // check for taskslists extension
+        options.set(
+            Options::ENABLE_TASKLISTS,
+            activated_extensions.contains(&"tasklist"),
+        );
+
+        // check for footnote extension
+        options.set(
+            Options::ENABLE_FOOTNOTES,
+            activated_extensions.contains(&"footnotes"),
+        );
+
+        // check for smart punctuation
+        options.set(
+            Options::ENABLE_SMART_PUNCTUATION,
+            activated_extensions.contains(&"smart-punctuation"),
+        );
     } else {
-        options.extension.strikethrough = true;
-        options.extension.superscript = true;
-        options.extension.footnotes = true;
-        options.extension.autolink = true;
-        options.extension.table = true;
-        options.extension.tagfilter = true;
-        options.extension.tasklist = true;
-        options.extension.description_lists = true;
-        options.extension.header_ids = Some("".to_owned());
+        // enable all extensions
+        options.insert(Options::ENABLE_STRIKETHROUGH);
+        options.insert(Options::ENABLE_TABLES);
+        options.insert(Options::ENABLE_TASKLISTS);
+        options.insert(Options::ENABLE_FOOTNOTES);
+        options.insert(Options::ENABLE_SMART_PUNCTUATION);
     };
 
     options

@@ -3,43 +3,7 @@ de.scss Frontend stylesheet for mdpdf
 @license GPL v3.0  @ Cobalt <https://cobalt.rocks>
 */
 
-
-@import "main.scss";
-
-.sourceLine {
-    word-wrap: normal;
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-
-code.sourceCode {
-    white-space: pre !important;
-}
-a.sourceLine {
-    text-indent: -0.5em;
-    padding-left: 0.5em;
-}
-
-a.sourceLine::before {
-    content: attr(title);
-    position: relative;
-    left: -1em;
-    text-align: right;
-    vertical-align: baseline;
-    pointer-events: all;
-    display: inline-block;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    padding: 0 4px;
-    width: 2em;
-    color: #7a7c7d !important;
-    border: none;
-    border-right: 1px solid darkgray !important;
-}
+@import 'main.scss';
 
 .footnotes > hr::before {
     content: 'Fußnoten';

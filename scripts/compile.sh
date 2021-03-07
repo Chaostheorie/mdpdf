@@ -16,10 +16,9 @@ compile_scss() {
     echo "Compiling SCSS -> CSS"
     sass --style=compressed --no-source-map --load-path scss/ --load-path node_modules/ scss/de.scss css/de.css
     sass --style=compressed --no-source-map --load-path scss/ --load-path node_modules/ scss/de.scss css/en.css
-    sass --style=compressed scss/pygment.scss --no-source-map css/pygment.css
 
-  #  purgecss --config purgecss.config.js --css css/de.css --content "../../templates/**/*\.html" --output css/
-  #  purgecss --config purgecss.config.js --css css/en.css --content "../../templates/**/*\.html" --output css/
+    purgecss --config purgecss.config.js --css css/de.css --content "../../templates/**/*\.html" --output css/
+    purgecss --config purgecss.config.js --css css/en.css --content "../../templates/**/*\.html" --output css/
     echo "Done"
 }
 

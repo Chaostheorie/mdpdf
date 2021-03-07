@@ -5,8 +5,9 @@ use std::include_str;
 use std::io::{BufReader, Error as IOError, Read};
 use std::path::Path;
 
-/* mdb base for basic layout */
-pub const PYGMENTS_STYLESHEET: &'static str = include_str!("assets/css/pygment.css");
+// code highlighting stylesheet
+pub static HIGHLIGHTCSS: &'static str =
+    include_str!("assets/node_modules/@highlightjs/cdn-assets/styles/dark.min.css");
 
 /* default name - can be included by having a name.txt file in src at compilation time */
 static NAME: &'static str = include_str!("name.txt");

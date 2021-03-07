@@ -11,10 +11,8 @@ Main.scss Frontend stylesheet for mdpdf
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'variables.scss';
 @import 'layout.scss';
-@import 'color.scss';
 
-p,
-.modest-p {
+p {
     font-size: 1rem;
     page-break-inside: avoid !important;
     margin-bottom: 1.3rem;
@@ -50,21 +48,10 @@ h4,
 h5,
 h6 {
     font-weight: bold;
-    color: #000;
-    position: relative;
-    display: inline-block;
-//    width: fit-content !important;
-
-    &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 100%;
-        margin: 0.1rem auto;
-        width: 50%;
-        height: 0.1rem;
-        background: $dark;
-    }
+    color: $dark;
+    width: 100%;
+    padding-bottom: 0.01rem;
+    border-bottom: 1px $darker solid;
 }
 
 h1,
@@ -92,6 +79,7 @@ h4,
 h5 {
     font-size: 135%;
     text-align: center !important;
+    border-bottom: 1px $light solid !important;
 }
 
 table {

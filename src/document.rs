@@ -1,4 +1,4 @@
-use crate::style::{Stylesheet, PYGMENTS_STYLESHEET};
+use crate::style::{Stylesheet, HIGHLIGHTCSS};
 use crate::{error, info, warning};
 use askama::Template;
 use chrono::prelude::*;
@@ -107,13 +107,11 @@ pub struct Document {
     pub content: String,
 }
 
-// function too search for any document & footer artifact
-
 impl Header {
     pub fn new(style: Stylesheet, language: &Languages) -> Header {
         Header {
             style: style.local(language),
-            css: PYGMENTS_STYLESHEET,
+            css: HIGHLIGHTCSS,
         }
     }
 }
@@ -192,7 +190,7 @@ impl Document {
         // render document
         match new.render() {
             Ok(s) => s,
-            Err(e) => error(format!("Couldn't render html: {}", e)),
+            Err(e) => error(format!("Couldn't render document html: {}", e)),
         }
     }
 
@@ -265,4 +263,4 @@ impl Document {
 
 // static values
 static DOCUMENT_PATH: &'static str = "./.document.html";
-static FOOTER_PATH: &'static str = "./.document.html";
+static FOOTER_PATH: &'static str = "./.footer.html";

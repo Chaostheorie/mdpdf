@@ -18,6 +18,13 @@ if ! command -v make &>/dev/null; then
     exit 1
 fi
 
+# Check if npm is installed
+if ! command -v npm &>/dev/null; then
+    echo "You need npm to build the application assets"
+    echo "Visit: https://www.npmjs.com/ or just check in your preferred package manager"
+    exit 1
+fi
+
 # Check if wkhtmltopdf is installed
 if ! command -v wkhtmltopdf &>/dev/null; then
     echo "You need wkhtmltopdf (with libraries) to build the application"
@@ -33,7 +40,7 @@ if [ "$(grep -Ei 'debian|buntu|mint' /etc/*release)" ]; then
         exit 1
     else
         make deb
-        echo "Output package to: target/debian. Please use dpkg or apt to install"
+        echo "Output package to: target/debian. Please use dpkg or apt(-get) to install"
     fi
 else
     make build

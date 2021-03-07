@@ -1,9 +1,9 @@
 # Makefile for mdpdf
 
 setup:
-	bash scripts/check.sh
-install:
 	bash scripts/install.sh
+dev:
+	bash scripts/build.sh dev
 deb:
 	bash scripts/build.sh deb
 build:

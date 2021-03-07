@@ -2,7 +2,7 @@
 node_modules/
 
 # Change file
-scss/.dir_changes
+scss/.dir-changes
 *.css
 
 # npm package.lock

@@ -9,7 +9,10 @@ cd ../../
 if [[ "$1" == "deb" ]]; then
     echo "Building debian package"
     cargo deb
+elif [[ "$1" == "dev" ]]; then
+    echo "Building dev executable"
+    cargo build
 else
     echo "Building executable"
-    cargo b --release
+    cargo build --release
 fi
