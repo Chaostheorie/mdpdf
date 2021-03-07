@@ -16,7 +16,7 @@ jobs:
                   toolchain: stable
             - uses: Swatinem/rust-cache@v1
             - uses: bahmutov/npm-install@v1
-                with:
+              with:
                   working-directory: src/assets
             - name: Install GNU make
               run: |
