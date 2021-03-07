@@ -16,8 +16,8 @@ jobs:
                   toolchain: stable
             - name: Install GNU make
               run: |
-                  apt update
-                  apt install make
+                  sudo apt update
+                  sudo apt install make
             - uses: actions/checkout@v2
             - name: Build
               run: make build
