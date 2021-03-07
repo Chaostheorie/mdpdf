@@ -1,3 +1,5 @@
+[![Build status](https://img.shields.io/github/workflow/status/Chaostheorie/mdpdf/CI?style=for-the-badge)](https://github.com/Chaostheorie/mdpdf/actions) [![License](https://img.shields.io/github/license/Chaostheorie/mdpdf?style=for-the-badge)](https://github.com/Chaostheorie/mdpdf/blob/main/LICENSE)
+
 # mdpdf
 
 mdpdf is a simple CLI tool to convert [commonmark](https://commonmark.org/) files to PDF files. It leverages [pulldown-cmark](https://github.com/raphlinus/pulldown-cmark), [syntect](https://github.com/trishume/syntect) as well as [ammonia](https://github.com/rust-ammonia/ammonia) and [wkhtmltopdf](https://wkhtmltopdf.org/) to provide a complete experience. This includes syntax highlighting and extensions such as tables, taskslists, strikethorugh or footnotes.
