@@ -14,8 +14,8 @@ CHANGE_FILE="scss/.dir-changes"
 # Compiling scss and removing unnecessary css
 compile_scss() {
     echo "Compiling SCSS -> CSS"
-    sass --style=compressed --no-source-map --load-path scss/ --load-path node_modules/ scss/de.scss css/de.css
-    sass --style=compressed --no-source-map --load-path scss/ --load-path node_modules/ scss/de.scss css/en.css
+    sass --style=compressed --update --no-source-map --load-path scss/ --load-path node_modules/ scss/de.scss css/de.css
+    sass --style=compressed --update --no-source-map --load-path scss/ --load-path node_modules/ scss/de.scss css/en.css
 
     purgecss --config purgecss.config.js --css css/de.css --content "../../templates/**/*\.html" --output css/
     purgecss --config purgecss.config.js --css css/en.css --content "../../templates/**/*\.html" --output css/

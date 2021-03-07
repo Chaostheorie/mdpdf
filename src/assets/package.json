@@ -4,11 +4,13 @@
     "description": "assets for mdpdf",
     "scripts": {
         "compile": "bash ../../scripts/compile.sh",
-        "lint": "stylelint scss/*.scss"
+        "lint": "stylelint scss/*.scss",
+        "clean": "rm -rf node_modules css-dist/* css/* scss/.dir-changes"
     },
     "author": "Cobalt",
     "license": "GPL-3.0",
     "devDependencies": {
+        "css-minify": "^1.1.0",
         "purgecss": "^4.0.2",
         "sass": "^1.29.0",
         "stylelint": "^13.12.0",

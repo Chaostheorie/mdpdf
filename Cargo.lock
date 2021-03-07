@@ -472,6 +472,7 @@ dependencies = [
  "askama",
  "chrono",
  "clap",
+ "maplit",
  "pulldown-cmark",
  "syntect",
  "wkhtmltopdf",

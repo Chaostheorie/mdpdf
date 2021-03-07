@@ -15,6 +15,7 @@ askama = { version = "*", default-features = false }
 ansi_term = "*"
 ammonia = "*"
 syntect = "4.4"
+maplit = "*"
 chrono = { version = "*", features = ["unstable-locales"] }
 wkhtmltopdf = "*"
 

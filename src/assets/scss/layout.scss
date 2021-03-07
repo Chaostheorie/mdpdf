@@ -5,6 +5,8 @@ layout.scss Frontend stylesheet for mdpdf
 
 @import 'variables.scss';
 
+/*! purgecss start ignore */
+
 body {
     margin: 0 !important;
 }
@@ -75,26 +77,19 @@ ol > li > ul > li:before {
     margin-right: 0.3rem;
 }
 
-.highlight {
-    margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-    border-radius: 1vh;
-    padding: 0.5rem;
-}
-
-.highlight > pre {
-    margin: 0rem !important;
-}
-
 blockquote {
     background: $my-eye-are-burning;
-    border-radius: 3px;
+    border-radius: 0.5rem;
+    border: 1px solid $dark;
     border-left: 5px solid $dark;
-    margin: 2rem 0;
-    margin-bottom: 0;
-    padding: 1rem;
-    margin-left: 1rem;
+    padding: 0.5rem;
+    margin: 0 0 0 1rem !important;
     font-family: monospace;
     display: block;
+
+    ~ p {
+        margin-bottom: 0rem !important;
+    }
 }
 
 pre > code {
@@ -102,7 +97,10 @@ pre > code {
 }
 
 pre > code > pre {
+    font-size: 105%;
     padding: 0.5rem;
-    border: 1px $light;
+    border: 2.5px $light;
     border-radius: 0.5rem;
 }
+
+/*! purgecss end ignore */

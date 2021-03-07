@@ -1,4 +1,5 @@
 use ammonia::Builder;
+use maplit::{hashmap, hashset};
 use pulldown_cmark::{html, CodeBlockKind, CowStr, Event, Options, Parser, Tag};
 use syntect::highlighting::ThemeSet;
 use syntect::html::highlighted_html_for_string;
@@ -20,8 +21,8 @@ fn highlight(source: &String, language: &String) -> String {
 
 // parse html
 pub fn parse_html(markdown: String, options: Options) -> String {
-    // indicator if next block needs to highlighted
-    let mut inidicator = false;
+    // indicator if next block needs to syntax highlighted
+    let mut code_inidicator = false;
     let mut code = String::new(); // contain all code for one block in one string to only highlight once per block
     let mut language = String::new(); // container for language token in fenced code block
 
@@ -33,7 +34,7 @@ pub fn parse_html(markdown: String, options: Options) -> String {
         Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(lang))) => {
             // set values to catch following text blocks
             language = lang.clone().into_string(); // this is required to find the language for syntax highlighting later
-            inidicator = true;
+            code_inidicator = true;
             highlighted_html.push(Event::Start(Tag::CodeBlock(CodeBlockKind::Fenced(lang))));
         }
         Event::End(Tag::CodeBlock(CodeBlockKind::Fenced(lang))) => {
@@ -41,19 +42,25 @@ pub fn parse_html(markdown: String, options: Options) -> String {
             highlighted_html.push(Event::End(Tag::CodeBlock(CodeBlockKind::Fenced(lang))));
 
             // reset values
-            inidicator = false;
+            code_inidicator = false;
             code = String::new();
         }
         Event::Text(text) => {
-            if inidicator {
+            if code_inidicator {
                 code.push_str(&text)
             } else {
                 highlighted_html.push(Event::Text(text));
             }
         }
-        event => {
-            highlighted_html.push(event);
+        Event::TaskListMarker(status) => {
+            // use boostrap 5 checkboxes instead of the ugly default ones
+            if status {
+                highlighted_html.push(Event::Html(CowStr::from(CHECKBOX_TOGGLED)));
+            } else {
+                highlighted_html.push(Event::Html(CowStr::from(CHECKBOX)));
+            }
         }
+        event => highlighted_html.push(event),
     });
 
     // Write to String buffer.
@@ -62,7 +69,17 @@ pub fn parse_html(markdown: String, options: Options) -> String {
 
     // clean html
     Builder::default()
-        .add_generic_attributes(&["style"])
+        .add_generic_attributes(&["style", "type", "checked"])
+        .add_tags(&["input"])
+        .allowed_classes(
+            hashmap!["input" => hashset!["form-check-input"], "div" => hashset!["form-check"]],
+        )
         .clean(&html_output)
         .to_string()
 }
+
+// checkbox varaints
+// kept here for readability
+static CHECKBOX: &'static str =
+    "<div class='form-check'><input class='form-check-input' type='checkbox' value=''></div>";
+static CHECKBOX_TOGGLED: &'static str = "<div class='form-check'><input class='form-check-input' type='checkbox' value='' checked></div>";

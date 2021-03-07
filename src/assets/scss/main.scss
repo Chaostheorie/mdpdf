@@ -13,9 +13,13 @@ Main.scss Frontend stylesheet for mdpdf
 @import 'layout.scss';
 
 p {
+    margin-bottom: 0rem !important;
+}
+
+body > p {
     font-size: 1rem;
     page-break-inside: avoid !important;
-    margin-bottom: 1.3rem;
+    margin-bottom: 1.3rem !important;
 }
 
 small,
