@@ -13,3 +13,6 @@ target/
 
 # File for embedding name into binary
 name.txt
+
+# VSCode 
+.vscode
