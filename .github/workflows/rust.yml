@@ -18,9 +18,9 @@ jobs:
             - uses: bahmutov/npm-install@v1
               with:
                   working-directory: src/assets
-            - name: Install GNU make
+            - name: Install wkhtmltox
               run: |
-                  sudo apt update
-                  sudo apt install make
+                  wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
+                  sudo apt install -y ./wkhtmltox_0.12.6-1.focal_amd64.deb
             - name: Build
               run: make build
