@@ -37,12 +37,12 @@ This uses [bootstrap 5](https://github.com/twbs/bootstrap) for styling and may e
 -   [ ] proper footnote styling
 -   [x] syntax highlighting
 
-### 0.1.2
+### 0.1.2 (planned)
 
 > This release will come with prebuilt static binaries for linux and prebuilt debian packages
 
 -   [x] Fix removal process
--   [ ] Custom stylesheet option (compile & runtime)
+-   [x] Custom stylesheet option (~~compile~~ & runtime)
 -   [ ] More documentation
 -   [x] Fix tmp file messages
 -   [x] Add links to README.md
@@ -50,7 +50,7 @@ This uses [bootstrap 5](https://github.com/twbs/bootstrap) for styling and may e
 ### 0.1.3 (WIP)
 
 -   [ ] proper checkbox rendering (I will most likely have to do some inline modifications)
--   [ ] Fix purgecss (will shrink binary size)
+-   [x] Fix purgecss (will shrink binary size)
 
 ### Planned
 
