@@ -1,0 +1,27 @@
+/*
+lime-variables.scss Frontend stylesheet for mdpdf
+
+A refreshing high-contrast color pallet that will
+give your documents a new look
+
+@license GPL v3.0  @ Cobalt <https://cobalt.rocks>
+*/
+
+// primary: underlining of h1
+$primary: #00e676 !default;
+// primary-variant: underlining of h2..6
+$primary-variant: lighten($primary, 10%) !default;
+// text: general text throughout document
+$text: #000000 !default;
+// highlight: links and bold content
+$highlight: darken($primary-variant, 20%) !default;
+
+// special: color used for border of codeblocks and blockquotes
+// also in use for bg of tableheads
+$special: #00b248 !default;
+// special-bg: background color used for codeblocks and blockquotes
+$special-bg: #f8f9fa !default;
+// special-text: text for table headings
+$special-text: #ffff !default;
+// special-highlight: highlight color for codeblocks and blockquotes
+$special-highlight: lighten($special, 10%) !default;

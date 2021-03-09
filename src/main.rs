@@ -84,7 +84,15 @@ fn main() {
             .short("-s")
             .long("--stylesheet")
             .takes_value(true)
-            .help("Custom css stylesheet in addition to mdb")
+            .help("Custom css stylesheet in addition to theme")
+        )
+        .arg(
+            Arg::with_name("theme")
+            .long("--theme")
+            .help("Theme for document")
+            .takes_value(true)
+            .default_value("light")
+            .possible_values(&["lime", "light", "night"])
         )
         .arg(
             Arg::with_name("de")

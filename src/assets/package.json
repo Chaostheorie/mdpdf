@@ -4,7 +4,7 @@
     "description": "assets for mdpdf",
     "scripts": {
         "compile": "bash ../../scripts/compile.sh",
-        "lint": "stylelint scss/*.scss",
+        "lint": "stylelint scss/**/*.scss",
         "clean": "rm -rf node_modules css-dist/* css/* scss/.dir-changes"
     },
     "author": "Cobalt",
@@ -13,13 +13,13 @@
         "css-minify": "^1.1.0",
         "purgecss": "^4.0.2",
         "sass": "^1.29.0",
-        "stylelint": "^13.12.0",
-        "stylelint-config-standard": "^21.0.0",
+        "stylelint-scss": "^3.19.0",
         "webpack": "^5.24",
         "webpack-cli": "^4.4",
         "webpack-merge": "^5.4.0"
     },
     "dependencies": {
-        "bootstrap": "^5.0.0-beta1"
+        "bootstrap": "^5.0.0-beta1",
+        "stylelint": "^13.12.0"
     }
 }

@@ -1,12 +1,11 @@
 /*
 de.scss Frontend stylesheet for mdpdf
-@license GPL v3.0  @ Cobalt <https://cobalt.rocks>
+@license GPL v3.0 @ Cobalt <https://cobalt.rocks>
 */
 
-@import 'main.scss';
-
-.footnotes > hr::before {
-    content: 'Fußnoten';
+body:last-child {
+    // footnotes container
+    content: 'Footnotes';
     border-bottom: 1px solid #ccc;
     padding-bottom: 0.1rem;
     font-size: 150%;
@@ -16,7 +15,7 @@ de.scss Frontend stylesheet for mdpdf
 }
 
 nav::before {
-    content: 'Inhaltsverzeichnis';
+    content: 'Table of Contents';
     font-size: 150%;
     text-rendering: optimizeLegibility;
     border-bottom: 1px solid #ccc;

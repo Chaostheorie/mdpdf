@@ -1,4 +1,4 @@
-use ammonia::Builder;
+use ammonia::{Builder, UrlRelative};
 use maplit::{hashmap, hashset};
 use pulldown_cmark::{html, CodeBlockKind, CowStr, Event, Options, Parser, Tag};
 use syntect::highlighting::ThemeSet;
@@ -63,7 +63,7 @@ pub fn parse_html(markdown: String, options: Options) -> String {
         event => highlighted_html.push(event),
     });
 
-    // Write to String buffer.
+    // Write to String buffer
     let mut html_output: String = String::new();
     html::push_html(&mut html_output, highlighted_html.into_iter());
 
@@ -72,8 +72,11 @@ pub fn parse_html(markdown: String, options: Options) -> String {
         .add_generic_attributes(&["style", "type", "checked"])
         .add_tags(&["input"])
         .allowed_classes(
-            hashmap!["input" => hashset!["form-check-input"], "div" => hashset!["form-check"]],
+            hashmap!["input" => hashset!["form-check-input"], "div" => hashset!["form-check", "break"], "span" => hashset!["break"]],
         )
+        .link_rel(None)
+        .url_relative(UrlRelative::PassThrough)
+        .add_url_schemes(&["file"]) // This is risky I will probably build a custom filter for this later
         .clean(&html_output)
         .to_string()
 }

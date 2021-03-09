@@ -1,0 +1,77 @@
+/*
+color.scss Frontend stylesheet for mdpdf
+
+This stylesheet contains all relevant color relevant parts it's meant to be used with any of the themed variants
+This scripts depends on the relevant variables being mounted beforehand
+
+@license GPL v3.0  @ Cobalt <https://cobalt.rocks>
+*/
+
+body {
+    color: $text;
+}
+
+a,
+strong {
+    color: $highlight;
+}
+
+h1 {
+    border-bottom: 1px $primary solid;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    border-bottom: 1px $primary-variant solid;
+}
+
+hr {
+    border-top: 1px solid $primary;
+    margin-top: 0px;
+}
+
+th {
+    background-color: $special;
+    color: $special-text;
+
+    ~ a,
+    ~ strong {
+        color: $special-highlight;
+    }
+}
+
+td {
+    border-bottom: 0.1rem solid $special;
+}
+
+blockquote {
+    background: $special-bg;
+    border: 1px solid $special;
+    border-left: 5px solid $special;
+
+    ~ a,
+    ~ strong {
+        color: $special-highlight;
+    }
+}
+
+pre > code {
+    color: $special-bg;
+
+    > pre {
+        border: 2.5px $special;
+    }
+}
+
+.form-check-input {
+    background-color: $special-text;
+    border: 1px solid $special;
+
+    &:checked {
+        background-color: $primary;
+        border-color: $primary;
+    }
+}

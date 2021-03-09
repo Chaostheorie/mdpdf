@@ -1,5 +1,5 @@
 use crate::document::Languages;
-use clap::Arg;
+use clap::{Arg, ArgMatches};
 use std::fs::File;
 use std::include_str;
 use std::io::{BufReader, Error as IOError, Read};
@@ -26,6 +26,20 @@ pub fn name_arg() -> Arg<'static, 'static> {
 pub struct Stylesheet {
     pub en: String,
     pub de: String,
+    pub main: &'static str,
+}
+
+pub struct Themes;
+
+impl Themes {
+    pub fn parse(matches: &ArgMatches) -> String {
+        match matches.value_of("theme").unwrap() {
+            "lime" => include_str!("assets/css/lime.css"),
+            "night" => include_str!("assets/css/night.css"),
+            _ => include_str!("assets/css/light.css"),
+        }
+        .to_owned()
+    }
 }
 
 impl Stylesheet {
@@ -33,6 +47,7 @@ impl Stylesheet {
         Stylesheet {
             en: include_str!("assets/css/en.css").to_owned(),
             de: include_str!("assets/css/de.css").to_owned(),
+            main: MAIN_STYLESHEET,
         }
     }
 
@@ -51,8 +66,11 @@ impl Stylesheet {
         reader.read_to_string(&mut buffer)?;
 
         Ok(Stylesheet {
+            main: MAIN_STYLESHEET,
             en: buffer.clone(),
             de: buffer,
         })
     }
 }
+
+pub static MAIN_STYLESHEET: &'static str = include_str!("assets/css/main.css");

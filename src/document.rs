@@ -1,4 +1,4 @@
-use crate::style::Stylesheet;
+use crate::style::{Stylesheet, Themes};
 use crate::{error, info, warning};
 use askama::Template;
 use chrono::prelude::*;
@@ -87,8 +87,9 @@ impl CC4Licenses {
 #[derive(Template)]
 #[template(path = "header.html")]
 pub struct Header {
-    pub style: String,
     pub css: &'static str,
+    pub theme: String,
+    pub local: String,
 }
 
 #[derive(Template)]
@@ -108,10 +109,11 @@ pub struct Document {
 }
 
 impl Header {
-    pub fn new(style: Stylesheet, language: &Languages) -> Header {
+    pub fn new(style: Stylesheet, theme: String, language: &Languages) -> Header {
         Header {
-            style: style.local(language),
-            css: "",  // kept for extendability
+            css: style.main,
+            local: style.local(language),
+            theme,
         }
     }
 }
@@ -183,7 +185,7 @@ impl Document {
     pub fn build(style: Stylesheet, content: String, matches: &ArgMatches) -> String {
         // create new document
         let new = Document {
-            header: Header::new(style, &Languages::parse(&matches)),
+            header: Header::new(style, Themes::parse(&matches), &Languages::parse(&matches)),
             content,
         };
 

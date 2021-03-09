@@ -14,12 +14,23 @@ CHANGE_FILE="scss/.dir-changes"
 # Compiling scss and removing unnecessary css
 compile_scss() {
     echo "Compiling SCSS -> CSS"
-    sass --style=compressed --update --no-source-map --load-path scss/ --load-path node_modules/ scss/de.scss css/de.css
-    sass --style=compressed --update --no-source-map --load-path scss/ --load-path node_modules/ scss/de.scss css/en.css
+    # Main.scss contains bootsrap and theme-independent layout
+    sass --style=compressed --update --no-source-map --load-path scss/ --load-path node_modules/ scss/main.scss css/main.css
 
-    purgecss --config purgecss.config.js --css css/de.css --content "../../templates/**/*\.html" --output css/
-    purgecss --config purgecss.config.js --css css/en.css --content "../../templates/**/*\.html" --output css/
-    echo "Done"
+    # locals
+    sass --style=compressed --update --no-source-map --load-path scss/ scss/locals/de.scss css/de.css
+    sass --style=compressed --update --no-source-map --load-path scss/ scss/locals/de.scss css/en.css
+
+    # themes
+    sass --style=compressed --update --no-source-map --load-path scss/ scss/themes/night.scss css/night.css
+    sass --style=compressed --update --no-source-map --load-path scss/ scss/themes/light.scss css/light.css
+    sass --style=compressed --update --no-source-map --load-path scss/ scss/themes/lime.scss css/lime.css
+
+    # purge main.scss for unneccessary bootstrap artifacts
+    echo "Cleaning artifacts from main.css"
+    purgecss --config purgecss.config.js --css css/main.css --content "../../templates/**/*\.html" --output css/
+    echo "Done" 
+    echo "" # Extra \n to make output look more neat
 }
 
 # Builds change file
@@ -30,7 +41,7 @@ build_change_file() {
         touch "$CHANGE_FILE"
     fi
 
-    for f in ./scss/*.scss; do
+    for f in ./scss/**/*.scss; do
         FILE_MODIFY=$(stat "$f" | grep Modify)
         echo "$f:$FILE_MODIFY" >>"$CHANGE_FILE"
     done
@@ -39,7 +50,7 @@ build_change_file() {
 # loads file and checks stats => 1: recompilation required 0: nothing todo
 load_change_file() {
     INDEX=0
-    FILES=(./scss/*.scss) # This is quite a handy way of indexing files
+    FILES=(./scss/**/*.scss) # This is quite a handy way of indexing files
 
     # This just reads it line by line and compares the current stat to the saved stat
     # I need to extend this, when I have too much time, to support checking

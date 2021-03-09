@@ -1,0 +1,25 @@
+/*
+night-variables.scss Frontend stylesheet for mdpdf
+
+material UI dark version @ Apache 2 License
+
+@license GPL v3.0  @ Cobalt <https://cobalt.rocks>
+*/
+
+// primary: underlining of h1
+$primary: #bb86fc;
+// primary-variant: underlining of h2..6
+$primary-variant: lighten($primary, 10%);
+// text: general text throughout document
+$text: #000000;
+// highlight: links and bold content
+$highlight: $primary-variant;
+
+// special: color used for border of codeblocks and blockquotes
+$special: #3700b3;
+// special-bg: background color used for codeblocks and blockquotes
+$special-bg: #f8f9fa;
+// special-text: text for table headings
+$special-text: #ffff !default;
+// special-highlight: highlight color for codeblocks and blockquotes
+$special-highlight: lighten($special, 10%);
