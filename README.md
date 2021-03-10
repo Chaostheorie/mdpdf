@@ -33,37 +33,3 @@ Build with `make create-examples`. The `example.md` will be built for each theme
 mdpdf is licensed under GPLv2.0 @ Cobalt <https://cobalt.rocks>. The same applies for all distributed binaries.
 
 This uses [bootstrap 5](https://github.com/twbs/bootstrap) for styling and may embed a part of their code in the binary. The license for bootstrap can be [found here](https://github.com/twbs/bootstrap/blob/main/LICENSE).
-
-## TODO
-
-### 0.1.1 (WIP)
-
--   [ ] proper footnote styling
--   [x] syntax highlighting
-
-### 0.1.2 (planned)
-
-> This release will come with prebuilt static binaries for linux and a prebuilt debian packages
-
--   [x] Fix removal process
--   [x] Custom stylesheet option (~~compile~~ & runtime)
--   [ ] More documentation
--   [ ] CD for linux binaries and debian packages
--   [x] Fix tmp file messages
--   [x] Add links to README.md
--   [x] Fix purgecss (will shrink binary size)
-
-### 0.1.3
-
--   [ ] use custom licenses (ATM only CC is supported)
--   [ ] proper TOC (May require a lot of work)
--   [ ] give more options on how to attach other parts
--   [ ] automatic CI/CD for examples
--   [ ] optimize CI with cached wkhtmltox installation and maybe optimization of assets generation with cache extension
--   [ ] More testing with e.g. intentionally faulty documents and different wkhtmltox versions
--   [ ] proper checkbox rendering (I will most likely have to do some inline modifications)
-
-### Planned
-
--   [ ] Windows and/ or Mac support
--   I would love to have a VSCode Plugin that allows me to use this directly
