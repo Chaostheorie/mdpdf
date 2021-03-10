@@ -29,7 +29,7 @@ compile_scss() {
     # purge main.scss for unneccessary bootstrap artifacts
     echo "Cleaning artifacts from main.css"
     purgecss --config purgecss.config.js --css css/main.css --content "../../templates/**/*\.html" --output css/
-    echo "Done" 
+    echo "Done"
     echo "" # Extra \n to make output look more neat
 }
 
@@ -64,6 +64,21 @@ load_change_file() {
     done <"$CHANGE_FILE"
     echo 0
 }
+
+# Check if GNU coreuitls (stat …) are installed
+if ! command -v stat &>/dev/null; then
+    echo "You need GNU Coreutils to build the application"
+    echo "Visit: https://www.gnu.org/software/coreutils/coreutils.html or just check in your preferred package manager"
+    exit 1
+fi
+
+# Check if sass is installed
+# This should be provided by npm
+if ! command -v sass &>/dev/null; then
+    echo "You need sass for building the assets. This script is not supposed to be run directly by you and should only be called by npm"
+    echo "Please use 'npm i' in src/assets/ to install it for this script"
+    exit 1
+fi
 
 # Get modified timestamp
 if [ -f "$CHANGE_FILE" ]; then

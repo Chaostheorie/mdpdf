@@ -9,3 +9,5 @@ build:
 clean:
 	rm -rf target
 	cd src/assets/ && npm run clean && cd ../../
+create-examples:
+	cd examples && bash ../scripts/create.sh

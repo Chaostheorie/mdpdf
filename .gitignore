@@ -8,8 +8,7 @@ target/
 .document*
 .footer*
 
-# general output files
-*.pdf
+
 
 # File for embedding name into binary
 name.txt
