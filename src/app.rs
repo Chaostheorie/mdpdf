@@ -4,7 +4,7 @@ use clap::{App, AppSettings, Arg, SubCommand};
 
 pub fn app() -> App<'static, 'static> {
     App::new("mdpdf")
-        .version("0.1.1")
+        .version("0.1.0 (WIP)")
         .author("Cobalt <https://cobalt.rocks>")
         .about("Converts md to pdf with wkhtlmtopdf and pulldown-cmark")
         .setting(AppSettings::AllowMissingPositional)
