@@ -66,3 +66,4 @@ This uses [bootstrap 5](https://github.com/twbs/bootstrap) for styling and may e
 ### Planned
 
 -   [ ] Windows and/ or Mac support
+-   I would love to have a VSCode Plugin that allows me to use this directly
