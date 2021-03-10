@@ -15,8 +15,8 @@ pub fn name_arg() -> Arg<'static, 'static> {
         .takes_value(true)
         .help("Add name and date to pdf footer");
 
-    if NAME != "" {
-        arg.default_value(NAME)
+    if NAME != "" && NAME != "\n" {
+        arg.default_value(NAME.trim())
     } else {
         arg
     }

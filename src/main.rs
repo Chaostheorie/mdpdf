@@ -1,24 +1,29 @@
 // includes
+mod app;
 mod convert;
 mod document;
-mod style;
 mod highlight;
+mod style;
 
 // imports
-use ansi_term::Colour::{Blue, Yellow, Red};
-use clap::{App, Arg};
-use std::env::var;
 use ammonia::clean_text;
+use ansi_term::Colour::{Blue, Red, Yellow};
+use std::env::var;
 use std::fmt::Display;
 use std::fs::File;
-use std::io::Read;
+use std::io::{stdout, Read};
 use std::path::Path;
-use crate::document::ClapOption;
 use std::process::exit;
 
-pub fn error<S: Display>(e: S) -> ! {
+fn error<S: Display>(e: S) -> ! {
     println!("{}: {}", Red.paint("[Error]"), e);
     exit(1);
+}
+
+fn callback_error<S: Display, F: Fn() -> ()>(e: S, callback: F) -> ! {
+    callback();
+    println!("\n{}: {}", Red.paint("[Error]"), e);
+    exit(1)
 }
 
 fn info<S: Display>(message: S) {
@@ -29,99 +34,27 @@ fn warning<S: Display>(message: S) {
     println!("{}: {}", Yellow.paint("[Warning]"), message);
 }
 
-
 fn main() {
-    let matches = App::new("mdpdf")
-        .version("0.1.1")
-        .author("Cobalt <https://cobalt.rocks>")
-        .about("Converts md to pdf with wkhtlmtopdf and comrak")
-        .arg(
-            Arg::with_name("INPUT")
-                .takes_value(true)
-                .required(true)
-                .help("Sets the input file to use"),
-        )
-        .arg(
-            Arg::with_name("OUTPUT")
-                .takes_value(true)
-                .required(true)
-                .help("Sets the output path to write pdf to"),
-        )
-        .arg(   
-            style::name_arg()
-        )
-        .arg(
-            Arg::with_name("extensions")
-            .help("Commonmark Extensions to be used. By default all are activated. Commas are supported as separators when specifying multiple.")
-            .takes_value(true)
-            .possible_values(&["footnotes", "table", "tasklist", "smart-punctuation", "strikethrough"])
-            .long("--extensions")
-        )
-        .arg(
-            Arg::with_name("pagesize")
-            .long("--pagesize")
-            .takes_value(true)
-            .help("PDF pagesize")
-            .default_value("A4")
-            .possible_values(&["A3", "A4", "A5", "A6"])
-        )
-        .arg(
-            Arg::with_name("keep")
-            .short("-k")
-            .takes_value(false)
-            .help("Keep temporary files (including body and footer")
-        )
-        .arg(
-            Arg::with_name("orientation")
-            .long("--orientation")        
-            .help("PDF document orientation")
-            .possible_values(&["landscape", "portrait"])
-            .default_value("portrait")
-            .takes_value(true)
-        )
-        .arg(
-            Arg::with_name("stylesheet")
-            .short("-s")
-            .long("--stylesheet")
-            .takes_value(true)
-            .help("Custom css stylesheet in addition to theme")
-        )
-        .arg(
-            Arg::with_name("theme")
-            .long("--theme")
-            .help("Theme for document")
-            .takes_value(true)
-            .default_value("light")
-            .possible_values(&["lime", "light", "night"])
-        )
-        .arg(
-            Arg::with_name("de")
-            .short("-d")
-            .long("--german")
-            .help("Static content in german") // ATM only affecting footer
-        )
-        .arg(
-            Arg::with_name("toc")
-            .help("Add table of contents (not implemented ATM")
-            .long("--toc")
-        )
-        .arg(
-            Arg::with_name("title")
-            .long("--title")
-            .short("-t")
-            .takes_value(true)
-            .help("PDF document title")
-        )
-        .arg(
-            Arg::with_name("license")
-            .short("-l")
-            .long("--license")
-            .help("Add CC 4.0 license to footer")
-            .requires("name")
-            .takes_value(true)
-            .possible_values(document::CC4Licenses::options())
-        )
-        .get_matches();
+    let cli_app = app::app();
+    let matches = cli_app.clone().get_matches();
+
+    // check if subcommand
+    if let Some(_) = matches.subcommand_matches("changelog") {
+        // ATM the changelog is just embedded at build time and the printed to the user
+        println!("{}", include_str!("../CHANGELOG.md"));
+        exit(0)
+    } else {
+        // if input and output don't have default arguments the 'changelog'
+        // subcommand would require input and output too
+        if matches.value_of("INPUT").unwrap() == "EMPTY"
+            || matches.value_of("OUTPUT").unwrap() == "EMPTY"
+        {
+            callback_error("Missing INPUT or OUTPUT argument", || {
+                let mut out = stdout();
+                cli_app.write_help(&mut out).unwrap();
+            });
+        }
+    }
 
     // evaluate cli args
     let name = if matches.is_present("name") {
