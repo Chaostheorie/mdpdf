@@ -14,7 +14,7 @@ pulldown-cmark = { version = "0.8", default-features = false }
 askama = { version = "*", default-features = false }
 ansi_term = "*"
 ammonia = "*"
-syntect = "4.4"
+syntect = "4.5"
 maplit = "*"
 chrono = { version = "*", features = ["unstable-locales"] }
 wkhtmltopdf = "*"

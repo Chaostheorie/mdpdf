@@ -7,6 +7,8 @@ deb:
 	bash scripts/build.sh deb
 build:
 	bash scripts/build.sh
+musl:
+	bash scripts/build.sh musl
 # Clean all artifacts from building
 clean:
 	rm -rf target .footer* .document*

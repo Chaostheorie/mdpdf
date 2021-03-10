@@ -19,7 +19,7 @@ fi
 # Check if npm is installed
 if ! command -v npm &>/dev/null; then
     echo "You need npm to build the application assets"
-    echo "Visit: https://www.npmjs.com/ or just check in your preferred package manager"
+    echo "Either use npm from your package manager or visit https://www.npmjs.com/ "
     exit 1
 fi
 
@@ -27,6 +27,7 @@ fi
 if ! command -v wkhtmltopdf &>/dev/null; then
     echo "You need wkhtmltopdf (with libraries) to build the application"
     echo "Official Releases: https://wkhtmltopdf.org/downloads.html"
+    echo "You want to download the wkhtmltox package"
     exit 1
 fi
 
@@ -42,6 +43,11 @@ if [[ "$1" == "deb" ]]; then
 elif [[ "$1" == "dev" ]]; then
     echo "Building dev executable"
     cargo build
+elif [[ "$1" == "musl" ]]; then
+    echo "Building executable with musl"
+    echo "Please ensure you have musl-tools (musl-gcc) and musl-dev installed"
+    echo "You will need the relevant toolchain: (rustup) rustup target add x86_64-unknown-linux-musl"
+    cargo build --release --target x86_64-unknown-linux-musl
 else
     echo "Building executable"
     cargo build --release
