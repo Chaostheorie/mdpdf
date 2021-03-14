@@ -124,7 +124,7 @@ impl Footer {
         let language = Languages::parse(matches);
         let (date, text) = match language {
             Languages::EN => (
-                local.format("%a, %b %e %Y").to_string(),
+                local.format("%b %e, %Y").to_string(),
                 "Created by".to_owned(),
             ),
             Languages::DE => (

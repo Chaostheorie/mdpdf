@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
+# Build script for mdpdf
+# This script is supposed to be called from the makefile
+# This script uses the first argument as build target
+# options: deb = debian package with cargo-deb,
+# musl = cargo with linux 64bit musl, dev = unpotimized current arch,
+# otherwise = optimized current arch
+
 # Ensuring all the programs are installed
 # Check if cargo is installed
 if ! command -v cargo &>/dev/null; then
