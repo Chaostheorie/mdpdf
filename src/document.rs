@@ -121,9 +121,17 @@ impl Header {
 impl Footer {
     fn parse_date(matches: &ArgMatches) -> DateTime<Local> {
         if let Some(date) = matches.value_of("date") {
-            match DateTime::parse_from_str(date, "%Y-%m-%d") {
+            // add additional data to date because otherwise there won't be enough info for chrono
+            let mut date = date.trim().to_owned();
+            date.push_str(" 00:00:00 +0000");
+
+            // convert with fallback to default
+            match DateTime::parse_from_str(&date, "%Y-%m-%d %H:%M:%S %z") {
                 Ok(date) => date.into(),
-                Err(_) => Local::now(),
+                Err(e) => {
+                    warning(format!("Failed to parse date: {:?}", e));
+                    Local::now()
+                }
             }
         } else {
             Local::now()
