@@ -1,6 +1,22 @@
 use crate::document::{CC4Licenses, ClapOption};
-use crate::style;
 use clap::{App, AppSettings, Arg, SubCommand};
+
+/* default name - can be included by having a name.txt file in src at compilation time */
+static NAME: &'static str = include_str!("name.txt");
+
+fn name_arg() -> Arg<'static, 'static> {
+    let arg = Arg::with_name("name")
+        .short("-n")
+        .long("--name")
+        .takes_value(true)
+        .help("Add name and date to pdf footer");
+
+    if NAME != "" && NAME != "\n" {
+        arg.default_value(NAME.trim())
+    } else {
+        arg
+    }
+}
 
 pub fn app() -> App<'static, 'static> {
     App::new("mdpdf")
@@ -25,7 +41,7 @@ pub fn app() -> App<'static, 'static> {
                 .help("Sets the output path to write pdf to"),
         )
         .arg(
-            style::name_arg()
+            name_arg()
         )
         .arg(
             Arg::with_name("extensions")
@@ -41,6 +57,14 @@ pub fn app() -> App<'static, 'static> {
             .help("PDF pagesize")
             .default_value("A4")
             .possible_values(&["A3", "A4", "A5", "A6"])
+        )
+        .arg(
+            Arg::with_name("date")
+            .long("--date")
+            .requires("name")
+            .takes_value(true)
+            .help("Defined date for footer specifically (e.g. 2014-11-28) [Default: today]")
+            .long_help("Defined date for footer specifically following the syntax %Y-%m-%d (e.g. 2014-11-28) [Default: today]")
         )
         .arg(
             Arg::with_name("keep")
@@ -76,6 +100,11 @@ pub fn app() -> App<'static, 'static> {
             .short("-d")
             .long("--german")
             .help("Static content in german") // ATM only affecting footer
+        )
+        .arg(
+            Arg::with_name("safe")
+            .long("--unsafe")
+            .help("Don't clean html before converting with wkhtmltopdf") // ATM only affecting footer
         )
         .arg(
             Arg::with_name("toc")

@@ -119,12 +119,25 @@ impl Header {
 }
 
 impl Footer {
+    fn parse_date(matches: &ArgMatches) -> DateTime<Local> {
+        if let Some(date) = matches.value_of("date") {
+            match DateTime::parse_from_str(date, "%Y-%m-%d") {
+                Ok(date) => date.into(),
+                Err(_) => Local::now(),
+            }
+        } else {
+            Local::now()
+        }
+    }
+
     pub fn new(name: String, matches: &ArgMatches) -> Footer {
-        let local = Local::now();
+        let local = Self::parse_date(matches);
         let language = Languages::parse(matches);
         let (date, text) = match language {
             Languages::EN => (
-                local.format("%b %e, %Y").to_string(),
+                local
+                    .format_localized("%b %e, %Y", Locale::en_GB)
+                    .to_string(),
                 "Created by".to_owned(),
             ),
             Languages::DE => (

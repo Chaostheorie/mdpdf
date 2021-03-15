@@ -20,7 +20,7 @@ fn highlight(source: &String, language: &String) -> String {
 }
 
 // parse html
-pub fn parse_html(markdown: String, options: Options) -> String {
+pub fn parse_html(markdown: String, options: Options, safe: bool) -> String {
     // indicator if next block needs to syntax highlighted
     let mut code_inidicator = false;
     let mut code = String::new(); // contain all code for one block in one string to only highlight once per block
@@ -68,7 +68,10 @@ pub fn parse_html(markdown: String, options: Options) -> String {
     html::push_html(&mut html_output, highlighted_html.into_iter());
 
     // clean html
-    Builder::default()
+    if !safe {
+        html_output
+    } else {
+        Builder::default()
         .add_generic_attributes(&["style", "type", "checked"])
         .add_tags(&["input"])
         .allowed_classes(
@@ -79,6 +82,7 @@ pub fn parse_html(markdown: String, options: Options) -> String {
         .add_url_schemes(&["file"]) // This is risky I will probably build a custom filter for this later
         .clean(&html_output)
         .to_string()
+    }
 }
 
 // checkbox varaints

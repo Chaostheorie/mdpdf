@@ -2,9 +2,15 @@ use crate::document::{Document, Footer};
 use crate::{error, info, warning};
 use clap::ArgMatches;
 use pulldown_cmark::Options;
+use std::process::exit;
 use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
-fn parse(wrapped: Option<&str>) -> PageSize {
+#[cfg(target_os = "windows")]
+static EXIT_CODE: i32 = 0x0100;
+#[cfg(not(target_os = "windows"))]
+static EXIT_CODE: i32 = 0;
+
+fn parse_pagesize(wrapped: Option<&str>) -> PageSize {
     match wrapped {
         Some(size) => match size {
             "A3" => PageSize::A3,
@@ -17,7 +23,7 @@ fn parse(wrapped: Option<&str>) -> PageSize {
     }
 }
 
-pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
+pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) -> ! {
     // create pdf application
     // this may initialize wkhtml too
     let mut app = match PdfApplication::new() {
@@ -81,7 +87,7 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
                 .object_setting("load.blockLocalFileAccess", "false")
                 .object_setting("web.enableJavascript", "true")
                 .margin(margin)
-                .page_size(parse(matches.value_of("pagesize")))
+                .page_size(parse_pagesize(matches.value_of("pagesize")))
                 .title(&title)
                 .build_from_html(&html)
         };
@@ -105,7 +111,7 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
             builder
                 .orientation(orientation)
                 .margin(margin)
-                .page_size(parse(matches.value_of("pagesize")))
+                .page_size(parse_pagesize(matches.value_of("pagesize")))
                 .object_setting("load.blockLocalFileAccess", "false")
                 .object_setting("web.enableJavascript", "true")
                 .title(&title)
@@ -137,7 +143,9 @@ pub fn convert(html: String, name: Option<String>, matches: &ArgMatches) {
                 e
             )),
         };
-    }
+    };
+
+    exit(EXIT_CODE)
 }
 
 pub fn build_options(matches: &ArgMatches) -> Options {

@@ -1,26 +1,9 @@
 use crate::document::Languages;
-use clap::{Arg, ArgMatches};
+use clap::ArgMatches;
 use std::fs::File;
 use std::include_str;
 use std::io::{BufReader, Error as IOError, Read};
 use std::path::Path;
-
-/* default name - can be included by having a name.txt file in src at compilation time */
-static NAME: &'static str = include_str!("name.txt");
-
-pub fn name_arg() -> Arg<'static, 'static> {
-    let arg = Arg::with_name("name")
-        .short("-n")
-        .long("--name")
-        .takes_value(true)
-        .help("Add name and date to pdf footer");
-
-    if NAME != "" && NAME != "\n" {
-        arg.default_value(NAME.trim())
-    } else {
-        arg
-    }
-}
 
 /* Stylesheets */
 pub struct Stylesheet {

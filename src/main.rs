@@ -70,10 +70,10 @@ fn main() {
         let path = Path::new(raw_path);
 
         if !path.exists() {
-            info("Selected stylesheet wasn't found. Falling back to default");
+            warning("Selected stylesheet wasn't found. Falling back to default");
             style::Stylesheet::default()
         } else if !path.is_file() {
-            info("Selected stylesheet isn't a file. Falling back to default");
+            warning("Selected stylesheet isn't a file. Falling back to default");
             style::Stylesheet::default()
         } else {
             match style::Stylesheet::load(&path) {
@@ -113,10 +113,10 @@ fn main() {
 
     // create html
     let options = convert::build_options(&matches);
-    let output = highlight::parse_html(raw_input, options);
+    let output = highlight::parse_html(raw_input, options, matches.is_present("safe"));
     let rendered = document::Document::build(style, output, &matches);
 
     // convert html
     // this handles all errors with ! and doesn't return a result
-    convert::convert(rendered, name, &matches);
+    convert::convert(rendered, name, &matches)
 }
