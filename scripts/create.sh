@@ -14,7 +14,7 @@ fi
 THEMES=(lime night light)
 
 convert() {
-    mdpdf --theme $1 example.md "example-$1.pdf"
+    mdpdf example.md "example-$1.pdf" --theme $1
 }
 
 for theme in ${THEMES[@]}; do

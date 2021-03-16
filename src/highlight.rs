@@ -87,6 +87,5 @@ pub fn parse_html(markdown: String, options: Options, safe: bool) -> String {
 
 // checkbox varaints
 // kept here for readability
-static CHECKBOX: &'static str =
-    "<div class='form-check'><input class='form-check-input' type='checkbox' value=''></div>";
-static CHECKBOX_TOGGLED: &'static str = "<div class='form-check'><input class='form-check-input' type='checkbox' value='' checked></div>";
+static CHECKBOX: &'static str = "☐ ";
+static CHECKBOX_TOGGLED: &'static str = "☑ ";
