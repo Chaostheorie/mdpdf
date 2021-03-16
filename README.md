@@ -10,7 +10,7 @@ It features support footers with amongst other things license and name options t
 
 ## Building
 
-The build process is at the moment only tested on debian. You will need to build wkhtmltopdf first. See their [packaging repository](https://github.com/wkhtmltopdf/packaging/releases/) for instructions. It's required to have [GNU bash](https://www.gnu.org/software/bash/) installed though you may launch the make commands from another terminal emulator.
+The build process is at the moment only tested on debian. You will need to build wkhtmltopdf first. See their [packaging repository](https://github.com/wkhtmltopdf/packaging/releases/) (tested version: wkhtmltox_0.12.6-1) for instructions. It's required to have [GNU bash](https://www.gnu.org/software/bash/) installed though you may launch the make commands from another terminal emulator.
 
 You will also need [GNU Grep](https://www.gnu.org/software/grep/), [GNU Coreutils (for stat)](https://www.gnu.org/software/coreutils/coreutils.html), [GNU make](https://www.gnu.org/software/make/) and [npm](https://www.npmjs.com/).
 
