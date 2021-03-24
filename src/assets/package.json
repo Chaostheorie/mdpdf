@@ -15,7 +15,7 @@
         "stylelint-scss": "^3.19.0"
     },
     "dependencies": {
-        "bootstrap": "^5.0.0-beta1",
+        "bootstrap": "^5.0.0-beta3",
         "stylelint": "^13.12.0"
     }
 }
